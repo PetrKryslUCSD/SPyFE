@@ -35,7 +35,6 @@ class SysmatAssemblerSparseFixedSymm:
         self.elem_mat_nrowcol = elem_mat_nrowcol
         self.nrowcol = nrowcol
 
-    # @numba.autojit
     def make_matrix(self):
         """Make a system matrix.
 
@@ -55,8 +54,7 @@ class SysmatAssemblerSparseFixedSymm:
                     J[:, col] = dofnums[:, m]
                     col += 1
 
-        fun_jit = numba.jit("void(i4, i4[:, :], i4[:, :])")(fun)
-        fun_jit(self.dofnums.shape[1], self.dofnums, J)
+        fun(self.dofnums.shape[1], self.dofnums, J)
         I = self.dofnums.ravel()  # I is now an alias for self.dofnums
         I.shape = (len(I), 1)
         I = I * numpy.ones((1, self.elem_mat_nrowcol), dtype=int)
@@ -96,7 +94,6 @@ class SysvecAssembler:
         self.elem_mat_nrowcol = elem_mat_nrowcol
         self.nrowcol = nrowcol
 
-    @numba.jit
     def make_vector(self):
         """Make a system vector.
 

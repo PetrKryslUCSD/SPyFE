@@ -22,7 +22,7 @@ class AllTests(unittest.TestCase):
         from spyfe.fesets.curvelike import FESetL2
         fes = FESetL2(numpy.array([[1, 2], [2, 3], [8, 4]]))
         print(fes.conn)
-        print(fes.bfundpar(0.0))
+        print(fes.gradbfunpar(0.0))
 
     def test_gen_field(self):
         from spyfe.fields.gen_field import GenField
@@ -170,19 +170,19 @@ class AllTests(unittest.TestCase):
         A = sparse.coo_matrix((V, (I, J)), shape=(4, 4))
         #print(A)
 
-    def test_sparse_assemble(self):
-        from numpy import array
-        from spyfe.assemblers import SysmatAssemblerSparse
-        a = SysmatAssemblerSparse()
-        elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col = 3, 3, 4, 7, 7
-        a.start_assembly(elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col)
-        mat = array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
-        dofnums_row = array([3, 0, 5])
-        dofnums_col = array([3, 0, 5])
-        a.assemble(mat, dofnums_row, dofnums_col)
-        dofnums_row = array([3, 0, 5])+5
-        dofnums_col = array([3, 0, 5])+5
-        a.assemble(mat, dofnums_row, dofnums_col)
+#    def test_sparse_assemble(self):
+#        from numpy import array
+#        from spyfe.assemblers import SysmatAssemblerSparse
+#        a = SysmatAssemblerSparse()
+#        elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col = 3, 3, 4, 7, 7
+#        a.start_assembly(elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col)
+#        mat = array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
+#        dofnums_row = array([3, 0, 5])
+#        dofnums_col = array([3, 0, 5])
+#        a.assemble(mat, dofnums_row, dofnums_col)
+#        dofnums_row = array([3, 0, 5])+5
+#        dofnums_col = array([3, 0, 5])+5
+#        a.assemble(mat, dofnums_row, dofnums_col)
         
     def test_Poisson_t3(self):
         from context import spyfe
@@ -241,22 +241,22 @@ class AllTests(unittest.TestCase):
            [ 3.36],
            [ 3.64]]))
 
-    def test_sparse_assemble(self):
-        from numpy import array, ones
-        from spyfe.assemblers import SysmatAssemblerSparseFixedSymmOptimized
-        elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col = 3, 3, 4, 7, 7
-        a = SysmatAssemblerSparseFixedSymmOptimized(elem_mat_nrows, elem_mat_nmatrices, ndofs_row)
-        mat = array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
-        dofnums_row = array([3, 0, 5])
-        a.dofnums[0, :] = dofnums_row
-        #        a.elmatrices[0, :, :] = mat
-        dofnums_row = array([3, 0, 5]) + 5
-        a.dofnums[1, :] = dofnums_row
-        #        a.elmatrices[1, :, :] = mat
-        I = a.dofnums.ravel()
-        I.shape = (len(I), 1)
-        I = I * ones((1, elem_mat_ncols), dtype=int)
-        print(I.shape)
+#    def test_sparse_assemble(self):
+#        from numpy import array, ones
+#        from spyfe.assemblers import SysmatAssemblerSparseFixedSymm
+#        elem_mat_nrows, elem_mat_ncols, elem_mat_nmatrices, ndofs_row, ndofs_col = 3, 3, 4, 7, 7
+#        a = SysmatAssemblerSparseFixedSymm(elem_mat_nrows, elem_mat_nmatrices, ndofs_row)
+#        mat = array([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])
+#        dofnums_row = array([3, 0, 5])
+#        a.dofnums[0, :] = dofnums_row
+#        #        a.elmatrices[0, :, :] = mat
+#        dofnums_row = array([3, 0, 5]) + 5
+#        a.dofnums[1, :] = dofnums_row
+#        #        a.elmatrices[1, :, :] = mat
+#        I = a.dofnums.ravel()
+#        I.shape = (len(I), 1)
+#        I = I * ones((1, elem_mat_ncols), dtype=int)
+#        print(I.shape)
 
     def test_connection_matrix(self):
         from context import spyfe
@@ -313,7 +313,6 @@ class AllTests(unittest.TestCase):
         from spyfe.meshing.exporters.vtkexporter import vtkexport
         from spyfe.meshing.generators.quadrilaterals import q4_block, q4_to_q8
         from spyfe.meshing.modification import fuse_nodes, merge_meshes
-
         N = 10
         Length, Width, nL, nW = 2.0, 3.0, N, N
         fens, fes = q4_block(Length, Width, nL, nW)
@@ -337,7 +336,6 @@ class AllTests(unittest.TestCase):
         from spyfe.meshing.importers import nastran_importer
         from spyfe.fesets.volumelike import FESetT4, FESetT10
         from spyfe.meshing.exporters.vtkexporter import vtkexport
-
         fens, fes = nastran_importer.import_mesh('Slot-coarser.nas')
         print(fes.count())
         geom = NodalField(fens=fens)
@@ -349,7 +347,6 @@ class AllTests(unittest.TestCase):
         from spyfe.meshing.importers import nastran_importer
         from spyfe.fesets.volumelike import FESetT4, FESetT10
         from spyfe.meshing.exporters.vtkexporter import vtkexport
-
         fens, feslist = nastran_importer.import_mesh('Slot-coarser.nas')
         print(feslist[0].count())
         geom = NodalField(fens=fens)
@@ -360,7 +357,6 @@ class AllTests(unittest.TestCase):
         from spyfe.fields.nodal_field import NodalField
         from spyfe.meshing.importers import abaqus_importer
         from spyfe.meshing.exporters.vtkexporter import vtkexport
-
         fens, feslist = abaqus_importer.import_mesh('LE11_H20.inp')
         for fes in feslist:
             print(fes.count())

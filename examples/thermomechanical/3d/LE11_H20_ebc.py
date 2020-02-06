@@ -90,7 +90,7 @@ print('Solution', time.time() - start)
 #
 print('Done', time.time() - start0)
 
-stresses = femm.nodal_field_from_integr_points_spr(geom, u, u, dTn1=dT, output=OUTPUT_CAUCHY, component=[0, 1, 2, 3, 4, 5])
+stresses = femm.nodal_field_from_integr_points_spr(geom, u, u, dtempn1=dT, output=OUTPUT_CAUCHY, component=[0, 1, 2, 3, 4, 5])
 pointA = fenode_select(fens, box=[707.107E-03,707.107E-03,  -707.107E-03, -707.107E-03, 0., 0.],
                        inflate=htol)
 print(pointA)
@@ -98,4 +98,6 @@ sigzzA = stresses.values[pointA, 2]
 print('Stress sigz @ A=', sigzzA/1.e6, ', ', (sigzzA / sigma_z_A_ref * 100), ' %')
 #
 stresses.values /= 1.0e6
-vtkexport("LE11_H20_90deg_results", fes, geom, {"displacements": u, 'dT': dT, 'stresses': stresses})
+vtkexport("LE11_H20_90deg_u", fes, geom, {"displacements": u})
+vtkexport("LE11_H20_90deg_dT", fes, geom, {'dT': dT})
+vtkexport("LE11_H20_90deg_s", fes, geom, {'stresses': stresses})

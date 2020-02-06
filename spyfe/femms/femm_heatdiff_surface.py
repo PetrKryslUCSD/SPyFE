@@ -1,6 +1,6 @@
 import numpy
 from numpy import linalg, dot
-from spyfe.assemblers import SysmatAssemblerSparseFixedSymmOptimized, SysvecAssembler
+from spyfe.assemblers import SysmatAssemblerSparseFixedSymm, SysvecAssembler
 from spyfe.femms.femm_base import FEMMBase
 
 
@@ -27,7 +27,7 @@ class FEMMHeatDiffSurface(FEMMBase):
         fes = self.fes
         Ns, gradNpars, npts, pc, w = self.integration_data()
         Hedim = temp.dim * fes.nfens
-        Assm = SysmatAssemblerSparseFixedSymmOptimized(Hedim, fes.conn.shape[0], temp.nfreedofs)
+        Assm = SysmatAssemblerSparseFixedSymm(fes, temp)
         temp.gather_all_dofnums(fes.conn, Assm.dofnums)
         J = numpy.zeros((geom.dim, geom.dim))
         for i in range(fes.conn.shape[0]):
@@ -45,7 +45,7 @@ class FEMMHeatDiffSurface(FEMMBase):
         Ns, gradNpars, npts, pc, w = self.integration_data()
         conns = fes.conn  # input connectivity
         Hedim = temp.dim * fes.nfens
-        Assm = SysvecAssembler(Hedim, conns.shape[0], temp.nfreedofs)
+        Assm = SysvecAssembler(fes, temp)
         He = numpy.zeros((Hedim, Hedim))
         temp.gather_all_dofnums(fes.conn, Assm.dofnums)
         pT = numpy.zeros((self.fes.conn.shape[1] * temp.dim,), dtype=numpy.float64)
@@ -69,7 +69,7 @@ class FEMMHeatDiffSurface(FEMMBase):
         Ns, gradNpars, npts, pc, w = self.integration_data()
         conns = fes.conn  # input connectivity
         Hedim = temp.dim * fes.nfens
-        Assm = SysvecAssembler(Hedim, conns.shape[0], temp.nfreedofs)
+        Assm = SysvecAssembler(fes, temp)
         He = numpy.zeros((Hedim, Hedim))
         temp.gather_all_dofnums(fes.conn, Assm.dofnums)
         pT = numpy.zeros((self.fes.conn.shape[1] * temp.dim,), dtype=numpy.float64)

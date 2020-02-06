@@ -103,10 +103,10 @@ def steady_state(model_data):
             ebcs = model_data['boundary_conditions']['essential']
             for ebc in ebcs:
                 fenids = ebc['node_list']
-                if 'value' not in ebc:
+                if 'temperature' not in ebc:
                     value = lambda xyz: 0.0
                 else:
-                    value = ebc['value']
+                    value = ebc['temperature']
                 for index in fenids:
                     temp.set_ebc([index], val=value(fens.xyz[index, :]))
             temp.apply_ebc()
