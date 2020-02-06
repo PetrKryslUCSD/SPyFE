@@ -25,7 +25,7 @@ k = 1.0  # thermal conductivity
 m = MatHeatDiff(thermal_conductivity=array([[k, 0.0], [0.0, k]]))
 Dz = 1.0  # thickness of the slice
 start = time.time()
-N = 1000
+N = 100
 Length, Width, nL, nW = 1.0, 1.0, N, N
 fens, fes = t3_ablock(Length, Width, nL, nW)
 print('Mesh generation', time.time() - start)

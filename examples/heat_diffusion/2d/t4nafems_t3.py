@@ -21,7 +21,7 @@ start0 = time.time()
 k = 52.0  # thermal conductivity
 m = MatHeatDiff(thermal_conductivity=numpy.array([[k, 0.0], [0.0, k]]))
 start = time.time()
-Width, nW = 0.6, 50
+Width, nW = 0.6, 20
 Heightb, nHb = 0.2, 20
 fens1, fes1 = t3_ablock(Width, Heightb, nW, nHb)
 Heightt, nHt = 0.8, 20
@@ -62,7 +62,7 @@ model_data['boundary_conditions'] \
 steady_state(model_data)
 print(model_data['timings'])
 nodeA = fenode_select(fens, box=bounding_box([Width, Heightb]), inflate= Width/1e6)
-print('Temperature at nodeA=', model_data['temp'].values[nodeA])
+print('Temperature at nodeA (', nodeA, ')=', model_data['temp'].values[nodeA])
 # Visualize the temperature
 plot_temperature(model_data)
 

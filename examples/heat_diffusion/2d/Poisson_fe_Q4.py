@@ -26,7 +26,7 @@ k = 1.0  # thermal conductivity
 m = MatHeatDiff(thermal_conductivity=array([[k, 0.0], [0.0, k]]))
 Dz = 1.0  # thickness of the slice
 start = time.time()
-N =30
+N = 30
 xs = numpy.linspace(0.0, 1.0, N+1)
 ys = numpy.linspace(0.0, 1.0, N+1)
 fens, fes = q4_blockx(xs, ys)
