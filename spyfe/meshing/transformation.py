@@ -87,11 +87,11 @@ def skewmat(theta):
     :param theta: 
     :return: 
     """
-    theta = numpy.array(theta).reshape(len(theta), 1)
+    theta = theta.reshape((len(theta),))
     if theta.shape[0] == 3:
-        s = numpy.array([[0, - theta[2], theta[1]],
-                         [theta[2], 0, - theta[0]],
-                         [- theta[1], theta[0], 0]])
+        s = numpy.array([[0, -theta[2], theta[1]],
+                         [theta[2], 0, -theta[0]],
+                         [-theta[1], theta[0], 0]])
     elif theta.shape[0] == 2:
         s = numpy.array([-theta[1], theta[0]]).reshape(2, 1)
     else:
