@@ -1,0 +1,4 @@
+*.pyc
+*.vtu
+*__pycache__*
+*.vtk
