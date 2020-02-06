@@ -28,7 +28,7 @@ b = a
 h = 0.05
 
 htol = h / 1000
-na, nb, nh = 3,3,1
+na, nb, nh = 6,6,4
 m = MatDeforTriaxLinearIso(rho=rho, e=E, nu=nu)
 
 start = time.time()
@@ -63,15 +63,17 @@ print('Mass assembly', time.time() - start)
 
 start = time.time()
 
-v = numpy.random.rand(u.nfreedofs, 10)
-tol=1.e-3
-maxiter=30
+v = numpy.random.rand(u.nfreedofs, 6)
+tol=1.e-4
+maxiter=150
 lamb, v, converged = spyfe.bipwr.gepbinvpwr2(K,M,v,tol,maxiter)
 if converged:
     ix = numpy.argsort(numpy.abs(lamb))
     lamb = lamb[ix].real
     v = v[:, ix]
     print([math.sqrt(om) / 2.0 / math.pi for om in lamb])
+    print("Reference frequencies:")
+    print([0.421, 1.029, 2.582, 3.306, 3.753, 6.555])
     print('Solution', time.time() - start)
 else:
     print( 'Not converged!'  )
