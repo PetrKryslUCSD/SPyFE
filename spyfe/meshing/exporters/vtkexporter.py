@@ -77,8 +77,7 @@ def vtkexport(tofile, fes, geom, flds=None):
                     for index in range(fld.dim):
                         data = fld.values[:, index].ravel()
                         cellData[key + str(index)] = data
-
-
+    
     unstructuredGridToVTK(tofile, x, y, z,
                           fes.conn.ravel(), offsets, cell_types,
                           pointData=pointData, cellData=cellData)
