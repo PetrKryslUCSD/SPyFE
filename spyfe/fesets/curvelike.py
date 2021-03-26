@@ -105,7 +105,7 @@ class FESet1Manifold(FESet):
         """
         return self.jac_curve(conn, bfunval, J, x)
 
-    def gradbfun(self, gradbfunpars, redjacmat, gradbfunout):
+    def gradbfun(self, gradbfunout, gradbfunpar, redjacmat):
         """Compute the gradient of the basis functions with the respect to
         the "reduced" spatial coordinates.
 
@@ -115,7 +115,7 @@ class FESet1Manifold(FESet):
         :return: Nothing
         """
         for r in range(gradbfunout.shape[0]):
-            gradbfunout[r, 0] = gradbfunpars[r, 0] / redjacmat[0, 0]
+            gradbfunout[r, 0] = gradbfunpar[r, 0] / redjacmat[0, 0]
 
 
 class FESetL2(FESet1Manifold):
@@ -148,7 +148,7 @@ class FESetL2(FESet1Manifold):
         :return: Array of zero-based connectivities.
         """
         c = self._conn
-        return numpy.vstack((c[:, (0)], c[:, (1)]))
+        return numpy.vstack((c[:, (0,)], c[:, (1,)]))
 
     def boundary_fe_type(self):
         """ Get the type of the  boundary finite element.
@@ -166,7 +166,7 @@ class FESetL3(FESet1Manifold):
     nfens = 3
 
     def __init__(self, conn, label=None):
-        super().__init__(conn=conn, nfens=FESetL2.nfens, label=label)
+        super().__init__(conn=conn, nfens=FESetL3.nfens, label=label)
 
     def bfun(self, param_coords):
         """
